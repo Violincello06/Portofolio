@@ -2,15 +2,16 @@
    Design Tokens & CSS Variables
    ========================================================================== */
 :root {
-    --bg-color: #0d0d0e;
-    --bg-surface: #141416;
-    --text-primary: #ffffff;
-    --text-secondary: #84848a;
-    --text-muted: #55555c;
-    --accent-neon: #ccff00;
-    --accent-neon-glow: rgba(204, 255, 0, 0.4);
-    --border-subtle: rgba(255, 255, 255, 0.08);
-    --border-hover: rgba(255, 255, 255, 0.2);
+    --bg-color: #000000;
+    --bg-surface: #0a0a0c;
+    --bg-surface-elevated: #141416;
+    --text-primary: #EEEEEE;
+    --text-secondary: #DDDDDD;
+    --text-muted: #888892;
+    --accent-neon: #CB2957;
+    --accent-neon-glow: rgba(203, 41, 87, 0.45);
+    --border-subtle: rgba(221, 221, 221, 0.12);
+    --border-hover: rgba(203, 41, 87, 0.45);
 
     --font-heading: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
     --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -91,10 +92,10 @@ button {
     justify-content: space-between;
     align-items: center;
     padding: 1.75rem var(--page-padding-x);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    background: rgba(13, 13, 14, 0.75);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    background: rgba(0, 0, 0, 0.82);
+    border-bottom: 1px solid rgba(221, 221, 221, 0.08);
 }
 
 .cv-link {
@@ -238,7 +239,7 @@ button {
     left: 5%;
     width: 90%;
     height: 80%;
-    background: radial-gradient(circle, rgba(204, 255, 0, 0.2) 0%, rgba(204, 255, 0, 0) 70%);
+    background: radial-gradient(circle, rgba(203, 41, 87, 0.28) 0%, rgba(203, 41, 87, 0) 70%);
     filter: blur(40px);
     z-index: 0;
     pointer-events: none;
@@ -248,13 +249,13 @@ button {
 /* Monitor Outer Bezel */
 .monitor-bezel {
     width: 100%;
-    background: linear-gradient(145deg, #1b1c20 0%, #111215 100%);
-    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: linear-gradient(145deg, #18181c 0%, #0d0e10 100%);
+    border: 1px solid rgba(221, 221, 221, 0.16);
     border-radius: 14px;
     padding: 10px;
     box-shadow: 
-        0 28px 60px -12px rgba(0, 0, 0, 0.9),
-        0 0 30px rgba(204, 255, 0, 0.15),
+        0 28px 60px -12px rgba(0, 0, 0, 0.95),
+        0 0 35px rgba(203, 41, 87, 0.22),
         inset 0 1px 1px rgba(255, 255, 255, 0.12);
     position: relative;
     transform-style: preserve-3d;
@@ -277,15 +278,15 @@ button {
 /* Screen Display */
 .monitor-screen {
     width: 100%;
-    background: #0a0a0c;
+    background: #09090b;
     border-radius: 9px;
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(221, 221, 221, 0.08);
     position: relative;
     background-image: 
-        radial-gradient(rgba(204, 255, 0, 0.04) 1px, transparent 1px);
+        radial-gradient(rgba(203, 41, 87, 0.07) 1px, transparent 1px);
     background-size: 16px 16px;
 }
 
@@ -295,8 +296,8 @@ button {
     align-items: center;
     justify-content: space-between;
     padding: 0.75rem 1.1rem;
-    background: rgba(18, 19, 23, 0.95);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    background: rgba(16, 17, 20, 0.95);
+    border-bottom: 1px solid rgba(221, 221, 221, 0.08);
     backdrop-filter: blur(8px);
 }
 
@@ -339,8 +340,8 @@ button {
     font-family: var(--font-mono);
     font-size: 0.65rem;
     color: var(--accent-neon);
-    background: rgba(204, 255, 0, 0.12);
-    border: 1px solid rgba(204, 255, 0, 0.3);
+    background: rgba(203, 41, 87, 0.14);
+    border: 1px solid rgba(203, 41, 87, 0.35);
     padding: 2px 7px;
     border-radius: 4px;
     font-weight: 700;
@@ -360,8 +361,8 @@ button {
     align-items: center;
     justify-content: space-between;
     padding: 0.8rem 1.05rem;
-    background: rgba(22, 23, 28, 0.75);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(20, 20, 24, 0.8);
+    border: 1px solid rgba(221, 221, 221, 0.1);
     border-radius: 9px;
     transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     text-decoration: none;
@@ -373,16 +374,16 @@ button {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(90deg, rgba(204, 255, 0, 0.07), transparent);
+    background: linear-gradient(90deg, rgba(203, 41, 87, 0.12), transparent);
     opacity: 0;
     transition: opacity 0.25s ease;
 }
 
 .app-card:hover {
-    background: rgba(26, 28, 34, 0.98);
-    border-color: rgba(204, 255, 0, 0.5);
+    background: rgba(26, 26, 32, 0.98);
+    border-color: rgba(203, 41, 87, 0.6);
     transform: translateY(-3px) translateZ(14px);
-    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.45), 0 0 16px rgba(204, 255, 0, 0.18);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.5), 0 0 18px rgba(203, 41, 87, 0.25);
 }
 
 .app-card:hover::before {
@@ -560,9 +561,9 @@ button {
 }
 
 .filter-pill.active {
-    border-color: rgba(255, 255, 255, 0.3);
-    color: var(--text-primary);
-    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--accent-neon);
+    color: var(--accent-neon);
+    background: rgba(203, 41, 87, 0.12);
 }
 
 .section-meta-header {
@@ -669,14 +670,14 @@ button {
     height: 180px;
     border-radius: 8px;
     overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.16);
-    background: #151619;
+    border: 1px solid rgba(221, 221, 221, 0.16);
+    background: #111114;
     opacity: 0;
     visibility: hidden;
     transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease, visibility 0.35s ease;
     box-shadow: 
-        0 20px 40px rgba(0, 0, 0, 0.85),
-        0 0 25px rgba(204, 255, 0, 0.15);
+        0 20px 40px rgba(0, 0, 0, 0.9),
+        0 0 25px rgba(203, 41, 87, 0.22);
     z-index: 10;
     pointer-events: none;
 }
