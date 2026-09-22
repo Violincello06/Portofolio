@@ -15,7 +15,7 @@
 
     --font-heading: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
     --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-    --font-mono: 'Space Mono', monospace;
+    --font-mono: 'JetBrains Mono', monospace;
 
     --page-padding-x: clamp(1.5rem, 5vw, 4rem);
     --transition-smooth: cubic-bezier(0.16, 1, 0.3, 1);
@@ -1003,4 +1003,18 @@ button {
         align-items: flex-start;
         gap: 0.75rem;
     }
+}
+
+/* ==========================================================================
+   Falling Code / File Particle Cursor Canvas
+   ========================================================================== */
+.code-trail-canvas,
+.glitter-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 999999;
 }
