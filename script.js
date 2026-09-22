@@ -58,7 +58,128 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 6. Interactive Falling Code & Files Cursor Trail
     initFallingCodeCursor();
+
+    // 7. Dynamic Pixel Character Topographic Walking Engine
+    initPixelWalkingPhysics();
 });
+
+/**
+ * Dynamic Pixel Character Walking Engine (Follows Letter Heights & Jumps Gaps)
+ */
+function initPixelWalkingPhysics() {
+    const walker = document.getElementById('pixelWalker');
+    const container = document.getElementById('heroFirstName');
+    if (!walker || !container) return;
+
+    const avatarArt = walker.querySelector('.pixel-avatar-art');
+    const charSpans = container.querySelectorAll('.char-step');
+    if (charSpans.length === 0) return;
+
+    let posX = 0;
+    let posY = 0;
+    let targetY = 0;
+    let direction = 1; // 1 = right, -1 = left
+    let speed = 0.95;
+    let isHovered = false;
+    let pauseTimer = 0;
+    let stepCycle = 0;
+
+    // Relative height profile per character in Space Grotesk (1.0 = Cap/Ascender, 0.64 = x-height)
+    const letterHeightMap = {
+        'R': 1.0,
+        'a': 0.64,
+        'l': 1.0,
+        'i': 0.82,
+        'p': 0.64,
+        'P': 1.0,
+        'r': 0.64,
+        'n': 0.64,
+        'j': 0.82
+    };
+
+    walker.addEventListener('mouseenter', () => isHovered = true);
+    walker.addEventListener('mouseleave', () => isHovered = false);
+
+    function updateWalkerPhysics() {
+        requestAnimationFrame(updateWalkerPhysics);
+
+        const walkerWidth = walker.offsetWidth || 34;
+        const maxDist = Math.max(0, container.clientWidth - walkerWidth);
+        const fontSize = parseFloat(window.getComputedStyle(container).fontSize) || 70;
+
+        if (!isHovered) {
+            if (pauseTimer > 0) {
+                pauseTimer--;
+            } else {
+                posX += speed * direction;
+                stepCycle += 0.22;
+
+                if (posX >= maxDist) {
+                    posX = maxDist;
+                    direction = -1;
+                    pauseTimer = 110; // Pause ~1.8s at end of name
+                    if (avatarArt) avatarArt.style.transform = 'scaleX(1)';
+                } else if (posX <= 0) {
+                    posX = 0;
+                    direction = 1;
+                    pauseTimer = 110; // Pause ~1.8s at start of name
+                    if (avatarArt) avatarArt.style.transform = 'scaleX(1)';
+                } else {
+                    if (avatarArt) {
+                        avatarArt.style.transform = direction === 1 ? 'scaleX(1)' : 'scaleX(-1)';
+                    }
+                }
+            }
+        }
+
+        // Find character underneath the walker's center of gravity
+        const footX = posX + walkerWidth / 2;
+        let currentChar = 'R';
+        let isOverSpace = false;
+        let spaceRatio = 0;
+
+        for (let i = 0; i < charSpans.length; i++) {
+            const span = charSpans[i];
+            const spanLeft = span.offsetLeft;
+            const spanRight = spanLeft + span.offsetWidth;
+
+            if (footX >= spanLeft && footX <= spanRight) {
+                if (span.classList.contains('char-space')) {
+                    isOverSpace = true;
+                    spaceRatio = (footX - spanLeft) / Math.max(1, span.offsetWidth);
+                } else {
+                    currentChar = span.getAttribute('data-char') || 'a';
+                }
+                break;
+            }
+        }
+
+        const heightRatio = letterHeightMap[currentChar] !== undefined ? letterHeightMap[currentChar] : 0.64;
+        
+        // Vertical step height calculation:
+        // Capital/Ascender (R, l, P) = sits directly on top (0px drop)
+        // Lowercase (a, r, n, p) = steps down into the valley (+28% fontSize)
+        let calculatedDrop = (1.0 - heightRatio) * (fontSize * 0.48);
+
+        if (isOverSpace) {
+            // Cute parabolic jump arc over the space gap between words
+            const jumpHeight = fontSize * 0.32;
+            const jumpArc = Math.sin(spaceRatio * Math.PI) * jumpHeight;
+            calculatedDrop = (fontSize * 0.24) - jumpArc;
+        }
+
+        // Stepping micro-bounce while in motion
+        const isWalking = pauseTimer <= 0 && !isHovered;
+        const stepBounce = isWalking ? Math.abs(Math.sin(stepCycle)) * (fontSize * 0.045) : 0;
+
+        targetY = calculatedDrop - stepBounce;
+        posY += (targetY - posY) * 0.24; // Smooth spring interpolation
+
+        walker.style.transform = `translate3d(${posX}px, ${posY}px, 0)`;
+    }
+
+    updateWalkerPhysics();
+}
 
 /**
  * 0. 2.5-Second Modern Developer Welcome Preloader

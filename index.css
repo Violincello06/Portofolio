@@ -206,6 +206,27 @@ button {
 
 .hero-name .first-name {
     color: var(--text-primary);
+    position: relative;
+    display: inline-block;
+    width: fit-content;
+    letter-spacing: -0.04em;
+}
+
+.name-chars-wrap {
+    display: inline-flex;
+    letter-spacing: inherit;
+}
+
+.char-step {
+    display: inline-block;
+    letter-spacing: inherit;
+    margin: 0;
+    padding: 0;
+}
+
+.char-step.char-space {
+    width: 0.26em;
+    display: inline-block;
 }
 
 .hero-name .last-name {
@@ -213,29 +234,21 @@ button {
 }
 
 /* ==========================================================================
-   Pixel Art Developer Avatar & Speech Bubble on Hero
+   Walking Pixel Art Developer Avatar on Hero Name
    ========================================================================== */
-.pixel-anchor {
-    position: relative;
-    display: inline-block;
-}
-
-.pixel-character-container {
+.pixel-walking-character {
     position: absolute;
-    bottom: 82%;
-    left: 50%;
-    transform: translateX(-50%);
+    top: 0;
+    left: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-decoration: none;
     cursor: pointer;
     z-index: 10;
-    transition: transform 0.25s var(--transition-smooth);
-}
-
-.pixel-character-container:hover {
-    transform: translateX(-50%) translateY(-4px) scale(1.08);
+    pointer-events: auto;
+    will-change: transform;
+    margin-top: -65px; /* Sits directly on letter heights */
 }
 
 .pixel-speech-bubble {
@@ -254,8 +267,8 @@ button {
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
-    margin-bottom: 7px;
-    animation: bubble-float 2.8s ease-in-out infinite alternate;
+    margin-bottom: 5px;
+    animation: bubble-float 2.5s ease-in-out infinite alternate;
 }
 
 .pixel-speech-bubble::after {
@@ -282,7 +295,8 @@ button {
     align-items: center;
     justify-content: center;
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.65));
-    animation: pixel-idle 2.2s ease-in-out infinite alternate;
+    transform-origin: center center;
+    will-change: transform;
 }
 
 .pixel-svg {
@@ -291,9 +305,39 @@ button {
     display: block;
 }
 
+/* Walking Legs Stepping Animation */
+.pixel-leg-left {
+    transform-origin: 9px 21px;
+    animation: pixel-leg-step-l 0.32s steps(2, start) infinite;
+}
+
+.pixel-leg-right {
+    transform-origin: 15px 21px;
+    animation: pixel-leg-step-r 0.32s steps(2, start) infinite;
+}
+
+/* Waving Hand */
 .pixel-waving-arm {
     transform-origin: 17px 13px;
     animation: pixel-arm-wave 1.1s steps(2, start) infinite;
+}
+
+@keyframes pixel-leg-step-l {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-2px) rotate(15deg);
+    }
+}
+
+@keyframes pixel-leg-step-r {
+    0%, 100% {
+        transform: translateY(-2px) rotate(-15deg);
+    }
+    50% {
+        transform: translateY(0);
+    }
 }
 
 @keyframes pixel-arm-wave {
@@ -301,16 +345,7 @@ button {
         transform: rotate(0deg);
     }
     50% {
-        transform: rotate(-30deg);
-    }
-}
-
-@keyframes pixel-idle {
-    0% {
-        transform: translateY(0);
-    }
-    100% {
-        transform: translateY(-3px);
+        transform: rotate(-32deg);
     }
 }
 
@@ -319,7 +354,37 @@ button {
         transform: translateY(0);
     }
     100% {
-        transform: translateY(-4px);
+        transform: translateY(-3px);
+    }
+}
+
+@keyframes wave-hand {
+    0%, 100% {
+        transform: rotate(0deg);
+    }
+    20%, 60% {
+        transform: rotate(14deg);
+    }
+    40%, 80% {
+        transform: rotate(-14deg);
+    }
+}
+
+@keyframes pixel-arm-wave {
+    0%, 100% {
+        transform: rotate(0deg);
+    }
+    50% {
+        transform: rotate(-32deg);
+    }
+}
+
+@keyframes bubble-float {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-3px);
     }
 }
 

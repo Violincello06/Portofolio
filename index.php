@@ -125,18 +125,33 @@ $socials = [
             <div class="hero-main-layout">
                 <div class="hero-title-wrap">
                     <h1 class="hero-name">
-                        <span class="first-name">
-                            <?= htmlspecialchars(substr($profile['firstName'], 0, -1)); ?><span class="pixel-anchor"><?= htmlspecialchars(substr($profile['firstName'], -1)); ?><a href="#contact" class="pixel-character-container" title="Click to Say Hello!">
+                        <span class="first-name" id="heroFirstName">
+                            <span class="name-chars-wrap"><?php 
+                                $firstNameChars = mb_str_split($profile['firstName']);
+                                foreach ($firstNameChars as $char) {
+                                    if ($char === ' ') {
+                                        echo '<span class="char-step char-space">&nbsp;</span>';
+                                    } else {
+                                        echo '<span class="char-step" data-char="' . htmlspecialchars($char) . '">' . htmlspecialchars($char) . '</span>';
+                                    }
+                                }
+                            ?></span>
+                            <a href="#contact" class="pixel-walking-character" id="pixelWalker" title="Click to Say Hello!">
                                 <span class="pixel-speech-bubble">
                                     <span class="bubble-text">Hallo :]</span> <span class="wave-emoji">👋</span>
                                 </span>
                                 <span class="pixel-avatar-art">
                                     <svg class="pixel-svg" viewBox="0 0 24 26" width="34" height="37" shape-rendering="crispEdges">
-                                        <!-- Legs / Sitting -->
-                                        <rect x="7" y="21" width="4" height="3" fill="#0D0D10"/>
-                                        <rect x="13" y="21" width="4" height="3" fill="#0D0D10"/>
-                                        <rect x="7" y="24" width="3" height="2" fill="#222228"/>
-                                        <rect x="14" y="24" width="3" height="2" fill="#222228"/>
+                                        <!-- Left Leg (Stepping animation) -->
+                                        <g class="pixel-leg-left">
+                                            <rect x="7" y="21" width="4" height="3" fill="#0D0D10"/>
+                                            <rect x="7" y="24" width="3" height="2" fill="#222228"/>
+                                        </g>
+                                        <!-- Right Leg (Stepping animation) -->
+                                        <g class="pixel-leg-right">
+                                            <rect x="13" y="21" width="4" height="3" fill="#0D0D10"/>
+                                            <rect x="14" y="24" width="3" height="2" fill="#222228"/>
+                                        </g>
                                         
                                         <!-- Suit / Body -->
                                         <rect x="6" y="14" width="12" height="7" fill="#141418"/>
@@ -181,7 +196,7 @@ $socials = [
                                         </g>
                                     </svg>
                                 </span>
-                            </a></span>
+                            </a>
                         </span>
                         <span class="last-name"><?= htmlspecialchars($profile['lastName']); ?></span>
                     </h1>
