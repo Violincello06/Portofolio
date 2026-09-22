@@ -54,11 +54,14 @@ $socials = [
 ];
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="notranslate" translate="no">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Disable Browser Auto-Translate Engine (Chrome, Edge, Google Translate) -->
+    <meta name="google" content="notranslate">
+    <meta name="googlebot" content="notranslate">
     <title><?= htmlspecialchars($siteTitle); ?></title>
     <!-- Google Fonts: Space Grotesk (Headings), JetBrains Mono (Developer/Code Monospace), Plus Jakarta Sans (Body) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -69,7 +72,7 @@ $socials = [
     <link rel="stylesheet" href="index.css?v=<?= time(); ?>">
 </head>
 
-<body>
+<body class="notranslate">
 
     <!-- Welcome Preloader (1-Second Fast Developer Reveal) -->
     <div class="welcome-preloader" id="welcomePreloader">
