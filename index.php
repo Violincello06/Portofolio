@@ -34,7 +34,7 @@ $projects = [
         'year' => '2026',
         'preview_image' => 'preview_project/snapgear.png',
         'filter_tag' => 'brand-identity',
-        'link' => '#project-1'
+        'link' => 'http://localhost/uts-web-ralipp/index.php'
     ],
     [
         'id' => '02',
@@ -212,7 +212,7 @@ $socials = [
             <!-- Projects Table / List -->
             <div class="projects-list">
                 <?php foreach ($projects as $project): ?>
-                    <a href="<?= htmlspecialchars($project['link']); ?>" class="project-item" data-category="<?= htmlspecialchars($project['filter_tag']); ?>">
+                    <a href="<?= htmlspecialchars($project['link']); ?>" class="project-item" data-category="<?= htmlspecialchars($project['filter_tag']); ?>" <?= (strpos($project['link'], 'http') === 0) ? 'target="_blank" rel="noopener noreferrer"' : ''; ?>>
                         <div class="project-left">
                             <span class="project-num"><?= htmlspecialchars($project['id']); ?></span>
                             <div class="project-info">
