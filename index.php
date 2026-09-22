@@ -125,7 +125,64 @@ $socials = [
             <div class="hero-main-layout">
                 <div class="hero-title-wrap">
                     <h1 class="hero-name">
-                        <span class="first-name"><?= htmlspecialchars($profile['firstName']); ?></span>
+                        <span class="first-name">
+                            <?= htmlspecialchars(substr($profile['firstName'], 0, -1)); ?><span class="pixel-anchor"><?= htmlspecialchars(substr($profile['firstName'], -1)); ?><a href="#contact" class="pixel-character-container" title="Click to Say Hello!">
+                                <span class="pixel-speech-bubble">
+                                    <span class="bubble-text">Hallo :]</span> <span class="wave-emoji">👋</span>
+                                </span>
+                                <span class="pixel-avatar-art">
+                                    <svg class="pixel-svg" viewBox="0 0 24 26" width="34" height="37" shape-rendering="crispEdges">
+                                        <!-- Legs / Sitting -->
+                                        <rect x="7" y="21" width="4" height="3" fill="#0D0D10"/>
+                                        <rect x="13" y="21" width="4" height="3" fill="#0D0D10"/>
+                                        <rect x="7" y="24" width="3" height="2" fill="#222228"/>
+                                        <rect x="14" y="24" width="3" height="2" fill="#222228"/>
+                                        
+                                        <!-- Suit / Body -->
+                                        <rect x="6" y="14" width="12" height="7" fill="#141418"/>
+                                        <rect x="9" y="14" width="6" height="4" fill="#FFFFFF"/>
+                                        <rect x="11" y="15" width="2" height="5" fill="#CB2957"/>
+                                        
+                                        <!-- Left Arm -->
+                                        <rect x="4" y="14" width="2" height="6" fill="#141418"/>
+                                        <rect x="4" y="20" width="2" height="2" fill="#F5C09B"/>
+                                        
+                                        <!-- Head & Neck -->
+                                        <rect x="10" y="13" width="4" height="1" fill="#E2A984"/>
+                                        <rect x="7" y="5" width="10" height="8" fill="#F5C09B"/>
+                                        
+                                        <!-- Cheeks Blush -->
+                                        <rect x="7" y="10" width="2" height="1" fill="#FF6584"/>
+                                        <rect x="15" y="10" width="2" height="1" fill="#FF6584"/>
+                                        
+                                        <!-- Eyes with Sparkle -->
+                                        <rect x="9" y="8" width="2" height="2" fill="#111111"/>
+                                        <rect x="9" y="8" width="1" height="1" fill="#FFFFFF"/>
+                                        <rect x="13" y="8" width="2" height="2" fill="#111111"/>
+                                        <rect x="13" y="8" width="1" height="1" fill="#FFFFFF"/>
+                                        
+                                        <!-- Friendly Smile -->
+                                        <rect x="11" y="11" width="2" height="1" fill="#9E5A44"/>
+                                        
+                                        <!-- Black Middle-part Hair -->
+                                        <rect x="6" y="2" width="12" height="3" fill="#111116"/>
+                                        <rect x="5" y="4" width="3" height="5" fill="#111116"/>
+                                        <rect x="16" y="4" width="3" height="5" fill="#111116"/>
+                                        <rect x="8" y="5" width="3" height="2" fill="#111116"/>
+                                        <rect x="13" y="5" width="3" height="2" fill="#111116"/>
+                                        <rect x="11" y="2" width="2" height="2" fill="#282834"/>
+                                        
+                                        <!-- Animated Waving Right Arm -->
+                                        <g class="pixel-waving-arm">
+                                            <rect x="17" y="13" width="3" height="2" fill="#141418"/>
+                                            <rect x="19" y="10" width="2" height="3" fill="#141418"/>
+                                            <rect x="19" y="7" width="3" height="3" fill="#F5C09B"/>
+                                            <rect x="20" y="5" width="2" height="2" fill="#F5C09B"/>
+                                        </g>
+                                    </svg>
+                                </span>
+                            </a></span>
+                        </span>
                         <span class="last-name"><?= htmlspecialchars($profile['lastName']); ?></span>
                     </h1>
                 </div>
