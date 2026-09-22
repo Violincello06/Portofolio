@@ -71,6 +71,35 @@ $socials = [
 
 <body>
 
+    <!-- Welcome Preloader (1-Second Fast Developer Reveal) -->
+    <div class="welcome-preloader" id="welcomePreloader">
+        <div class="preloader-inner">
+            <div class="preloader-badge">
+                <span class="status-dot"></span>
+                <span class="mono-label">About Me</span>
+            </div>
+            <h2 class="preloader-title">
+                <span class="preloader-greeting">Who Am I?</span>
+                <span class="preloader-name"><?= htmlspecialchars($profile['firstName'] . ' ' . $profile['lastName']); ?></span>
+            </h2>
+            <div class="preloader-progress-track">
+                <div class="preloader-progress-bar" id="preloaderBar"></div>
+            </div>
+            <div class="preloader-footer">
+                <span class="mono-label preloader-status" id="preloaderStatus">Loading...</span>
+                <span class="mono-label preloader-count" id="preloaderCounter">0%</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ambient Animated Aurora Mesh Background -->
+    <div class="ambient-aurora-bg" aria-hidden="true">
+        <div class="aurora-orb aurora-orb-1"></div>
+        <div class="aurora-orb aurora-orb-2"></div>
+        <div class="aurora-orb aurora-orb-3"></div>
+        <div class="aurora-grid"></div>
+    </div>
+
     <!-- Header / Navigation -->
     <header class="navbar">
         <div class="nav-left">
@@ -247,7 +276,7 @@ $socials = [
                 <!-- Left: Portrait Image Box -->
                 <div class="about-image-wrapper">
                     <div class="about-portrait-placeholder">
-                        <img src="<?= htmlspecialchars($profile['avatar']); ?>" alt="<?= htmlspecialchars($profile['firstName'] . ' ' . $profile['lastName']); ?>" class="about-portrait-img">
+                        <img src="<?= htmlspecialchars($profile['avatar']); ?>?v=<?= time(); ?>" alt="<?= htmlspecialchars($profile['firstName'] . ' ' . $profile['lastName']); ?>" class="about-portrait-img">
                         <div class="placeholder-guide">
                             <span><?= htmlspecialchars($profile['firstName'] . ' ' . $profile['lastName']); ?></span>
                         </div>
