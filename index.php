@@ -34,7 +34,7 @@ $projects = [
         'year' => '2026',
         'preview_image' => 'preview_project/snapgear.png',
         'filter_tag' => 'brand-identity',
-        'link' => 'http://localhost/uts-web-ralipp/index.php'
+        'link' => 'https://snapgear.xo.je/'
     ],
     [
         'id' => '02',
@@ -317,22 +317,31 @@ $socials = [
             <div class="projects-list">
                 <?php foreach ($projects as $project): ?>
                     <a href="<?= htmlspecialchars($project['link']); ?>" class="project-item" data-category="<?= htmlspecialchars($project['filter_tag']); ?>" <?= (strpos($project['link'], 'http') === 0) ? 'target="_blank" rel="noopener noreferrer"' : ''; ?>>
-                        <div class="project-left">
-                            <span class="project-num"><?= htmlspecialchars($project['id']); ?></span>
-                            <div class="project-info">
-                                <h3 class="project-title"><?= htmlspecialchars($project['title']); ?></h3>
-                                <span class="project-category"><?= htmlspecialchars($project['category']); ?></span>
+                        <div class="project-header-row">
+                            <div class="project-left">
+                                <span class="project-num"><?= htmlspecialchars($project['id']); ?></span>
+                                <div class="project-info">
+                                    <h3 class="project-title"><?= htmlspecialchars($project['title']); ?></h3>
+                                    <span class="project-category"><?= htmlspecialchars($project['category']); ?></span>
+                                </div>
+                            </div>
+                            <div class="project-right">
+                                <span class="project-year"><?= htmlspecialchars($project['year']); ?></span>
+                                <span class="project-action-arrow">↗</span>
                             </div>
                         </div>
-                        <div class="project-right">
-                            <span class="project-year"><?= htmlspecialchars($project['year']); ?></span>
-                        </div>
-                        <!-- Hover Preview Container -->
+
+                        <!-- Full-Width Bottom Preview Container -->
                         <div class="project-preview-box">
                             <div class="image-placeholder">
                                 <img src="<?= htmlspecialchars($project['preview_image']); ?>" alt="<?= htmlspecialchars($project['title']); ?> Preview" class="preview-img">
                                 <div class="placeholder-guide">
-                                    <span>Preview Image</span>
+                                    <span class="guide-status-dot"></span>
+                                    <span class="guide-title">UPCOMING PROJECT</span>
+                                    <span class="guide-subtitle"><?= htmlspecialchars($project['category']); ?></span>
+                                </div>
+                                <div class="preview-hover-tag">
+                                    <span><?= (strpos($project['link'], 'http') === 0) ? 'Open Live Website ↗' : 'View Details ↗'; ?></span>
                                 </div>
                             </div>
                         </div>
