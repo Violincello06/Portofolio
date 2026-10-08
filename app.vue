@@ -35,17 +35,19 @@
 
     <!-- Header / Navigation -->
     <header class="navbar">
-      <div class="nav-left">
-        <a href="#cv" class="cv-link">
-          <span class="status-dot"></span>
-          <span class="cv-text">CV</span>
-        </a>
+      <div class="navbar-inner">
+        <div class="nav-left">
+          <a href="#cv" class="cv-link">
+            <span class="status-dot"></span>
+            <span class="cv-text">CV</span>
+          </a>
+        </div>
+        <nav class="nav-right">
+          <a href="#work" class="nav-item">Work</a>
+          <a href="#about" class="nav-item">About</a>
+          <a href="#contact" class="nav-item">Contact</a>
+        </nav>
       </div>
-      <nav class="nav-right">
-        <a href="#work" class="nav-item">Work</a>
-        <a href="#about" class="nav-item">About</a>
-        <a href="#contact" class="nav-item">Contact</a>
-      </nav>
     </header>
 
     <main>
@@ -348,11 +350,13 @@
 
     <!-- Footer -->
     <footer class="footer">
-      <div class="footer-left">
-        <span class="mono-label">{{ profile.firstName }} {{ profile.lastName }} — Portfolio (Nuxt 3)</span>
-      </div>
-      <div class="footer-right">
-        <span class="mono-label">{{ profile.city }}</span>
+      <div class="footer-inner">
+        <div class="footer-left">
+          <span class="mono-label">{{ profile.firstName }} {{ profile.lastName }} — Portfolio (Nuxt 3)</span>
+        </div>
+        <div class="footer-right">
+          <span class="mono-label">{{ profile.city }}</span>
+        </div>
       </div>
     </footer>
   </div>

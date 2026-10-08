@@ -1,12 +1,21 @@
-import { shallowReactive, reactive, effectScope, getCurrentScope, hasInjectionContext, getCurrentInstance, inject, toRef, computed, defineComponent, h, isReadonly, isRef, isShallow, isReactive, toRaw, ref, mergeProps, useSSRContext, defineAsyncComponent, unref, provide, onErrorCaptured, onServerPrefetch, createVNode, resolveDynamicComponent, createApp } from "vue";
-import { $fetch } from "C:/xampp/htdocs/Portofolio/node_modules/ofetch/dist/node.mjs";
-import { baseURL } from "#internal/nuxt/paths";
-import { createHooks } from "C:/xampp/htdocs/Portofolio/node_modules/hookable/dist/index.mjs";
-import { getContext } from "C:/xampp/htdocs/Portofolio/node_modules/unctx/dist/index.mjs";
-import { sanitizeStatusCode, createError as createError$1 } from "C:/xampp/htdocs/Portofolio/node_modules/h3/dist/index.mjs";
-import { hasProtocol, joinURL, withQuery, parseURL, encodePath, decodePath, isScriptProtocol, isEqual, stringifyParsedURL, stringifyQuery, parseQuery } from "C:/xampp/htdocs/Portofolio/node_modules/ufo/dist/index.mjs";
-import { defu } from "C:/xampp/htdocs/Portofolio/node_modules/defu/dist/defu.mjs";
-import { ssrRenderAttrs, ssrRenderClass, ssrInterpolate, ssrRenderStyle, ssrRenderList, ssrRenderAttr, ssrRenderComponent, ssrRenderSuspense, ssrRenderVNode } from "vue/server-renderer";
+import process from 'node:process';globalThis._importMeta_=globalThis._importMeta_||{url:"file:///_entry.js",env:process.env};import { hasInjectionContext, getCurrentInstance, createApp, provide, onErrorCaptured, onServerPrefetch, unref, createVNode, resolveDynamicComponent, shallowReactive, reactive, effectScope, inject, defineAsyncComponent, mergeProps, ref, computed, getCurrentScope, toRef, defineComponent, h, isReadonly, useSSRContext, isRef, isShallow, isReactive, toRaw } from 'vue';
+import { p as parseURL, e as encodePath, l as decodePath, m as hasProtocol, n as isScriptProtocol, o as joinURL, w as withQuery, q as sanitizeStatusCode, r as getContext, $ as $fetch, v as createHooks, f as createError$1, x as isEqual, y as stringifyParsedURL, z as stringifyQuery, A as parseQuery, B as defu } from '../_/nitro.mjs';
+import { b as baseURL } from '../routes/renderer.mjs';
+import { ssrRenderSuspense, ssrRenderComponent, ssrRenderVNode, ssrRenderAttrs, ssrRenderClass, ssrInterpolate, ssrRenderStyle, ssrRenderList, ssrRenderAttr } from 'vue/server-renderer';
+import 'node:http';
+import 'node:https';
+import 'node:events';
+import 'node:buffer';
+import 'node:fs';
+import 'node:path';
+import 'node:crypto';
+import 'node:url';
+import 'vue-bundle-renderer/runtime';
+import 'unhead/server';
+import 'devalue';
+import 'unhead/utils';
+import 'unhead/plugins';
+
 if (!globalThis.$fetch) {
   globalThis.$fetch = $fetch.create({
     baseURL: baseURL()
@@ -16,7 +25,6 @@ if (!("global" in globalThis)) {
   globalThis.global = globalThis;
 }
 const nuxtLinkDefaults = { "componentName": "NuxtLink" };
-const nuxtDefaultErrorValue = null;
 const appId = "nuxt-app";
 function getNuxtAppCtx(id = appId) {
   return getContext(id, {
@@ -230,7 +238,7 @@ function defineGetter(obj, key, val) {
   Object.defineProperty(obj, key, { get: () => val });
 }
 const PageRouteSymbol = /* @__PURE__ */ Symbol("route");
-import.meta.url.replace(/\/app\/.*$/, "/");
+globalThis._importMeta_.url.replace(/\/app\/.*$/, "/");
 const useRouter = () => {
   return useNuxtApp()?.$router;
 };
@@ -371,15 +379,6 @@ const showError = (error) => {
   }
   return nuxtError;
 };
-const clearError = async (options = {}) => {
-  const nuxtApp = useNuxtApp();
-  const error = /* @__PURE__ */ useError();
-  nuxtApp.callHook("app:error:cleared", options);
-  if (options.redirect) {
-    await useRouter().replace(options.redirect);
-  }
-  error.value = nuxtDefaultErrorValue;
-};
 const isNuxtError = (error) => !!error && typeof error === "object" && NUXT_ERROR_SIGNATURE in error;
 const createError = (error) => {
   if (typeof error !== "string" && error.statusText) {
@@ -511,7 +510,7 @@ const router_DclsWNDeVV7SyG4lslgLnjbQUK1ws8wgf2FHaAbo7Cw = /* @__PURE__ */ defin
         }
       };
     };
-    const baseURL2 = (/* @__PURE__ */ useRuntimeConfig()).app.baseURL;
+    (/* @__PURE__ */ useRuntimeConfig()).app.baseURL;
     const route = reactive(getRouteFromPath(initialURL));
     let navigationCounter = 0;
     async function handleNavigation(url, replace) {
@@ -555,8 +554,8 @@ const router_DclsWNDeVV7SyG4lslgLnjbQUK1ws8wgf2FHaAbo7Cw = /* @__PURE__ */ defin
       options: {},
       install: () => Promise.resolve(),
       // Navigation
-      push: (url) => handleNavigation(url, false),
-      replace: (url) => handleNavigation(url, true),
+      push: (url) => handleNavigation(url),
+      replace: (url) => handleNavigation(url),
       back: () => (void 0).history.go(-1),
       go: (delta) => (void 0).history.go(delta),
       forward: () => (void 0).history.go(1),
@@ -847,8 +846,8 @@ const _sfc_main$1 = {
     const statusText = _error.statusMessage ?? (is404 ? "Page Not Found" : "Internal Server Error");
     const description = _error.message || _error.toString();
     const stack = void 0;
-    const _Error404 = defineAsyncComponent(() => import("./_nuxt/error-404-BsILjH3x.js"));
-    const _Error = defineAsyncComponent(() => import("./_nuxt/error-500-CQnGb1RT.js"));
+    const _Error404 = defineAsyncComponent(() => import('./error-404-BsILjH3x.mjs'));
+    const _Error = defineAsyncComponent(() => import('./error-500-CQnGb1RT.mjs'));
     const ErrorTemplate = is404 ? _Error404 : _Error;
     return (_ctx, _push, _parent, _attrs) => {
       _push(ssrRenderComponent(unref(ErrorTemplate), mergeProps({ status: unref(status), statusText: unref(statusText), statusCode: unref(status), statusMessage: unref(statusText), description: unref(description), stack: unref(stack) }, _attrs), null, _parent));
@@ -939,15 +938,6 @@ let entry;
   };
 }
 const entry_default = ((ssrContext) => entry(ssrContext));
-export {
-  useNuxtApp as a,
-  useRuntimeConfig as b,
-  nuxtLinkDefaults as c,
-  entry_default as default,
-  encodeRoutePath as e,
-  navigateTo as n,
-  resolveRouteObject as r,
-  tryUseNuxtApp as t,
-  useRouter as u
-};
+
+export { useNuxtApp as a, useRuntimeConfig as b, nuxtLinkDefaults as c, entry_default as default, encodeRoutePath as e, navigateTo as n, resolveRouteObject as r, tryUseNuxtApp as t, useRouter as u };
 //# sourceMappingURL=server.mjs.map

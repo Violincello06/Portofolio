@@ -17,8 +17,9 @@
     --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
 
-    --page-padding-x: clamp(1.5rem, 5vw, 4rem);
+    --page-padding-x: clamp(1.25rem, 3.5vw, 2.5rem);
     --transition-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+    --content-max-width: 1140px;
 }
 
 /* ==========================================================================
@@ -55,8 +56,25 @@ body {
     line-height: 1.5;
 }
 
-main,
+.portfolio-root {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    width: 100%;
+    max-width: var(--content-max-width);
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
 footer {
+    width: 100%;
+    max-width: var(--content-max-width);
+    margin: 0 auto;
     position: relative;
     z-index: 1;
 }
@@ -100,13 +118,20 @@ button {
     width: 100%;
     z-index: 100;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1.75rem var(--page-padding-x);
+    justify-content: center;
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
     background: rgba(0, 0, 0, 0.82);
     border-bottom: 1px solid rgba(221, 221, 221, 0.08);
+    padding: 1.15rem var(--page-padding-x);
+}
+
+.navbar-inner {
+    width: 100%;
+    max-width: var(--content-max-width);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .cv-link {
@@ -170,17 +195,17 @@ button {
    Hero Section
    ========================================================================== */
 .hero-section {
-    min-height: 82vh;
+    min-height: auto;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    padding: 7.5rem var(--page-padding-x) 4rem;
+    padding: 5.5rem var(--page-padding-x) 2.2rem;
     position: relative;
 }
 
 .hero-top-tag {
-    margin-top: 0.5rem;
-    margin-bottom: 1.5rem;
+    margin-top: 0.25rem;
+    margin-bottom: 0.85rem;
 }
 
 .hero-main-layout {
@@ -188,7 +213,7 @@ button {
     justify-content: space-between;
     align-items: center;
     gap: 2rem;
-    margin: 1.5rem 0 3.5rem 0;
+    margin: 0.8rem 0 2.2rem 0;
     position: relative;
 }
 
@@ -199,10 +224,10 @@ button {
 
 .hero-name {
     font-family: var(--font-heading);
-    font-size: clamp(3.2rem, 8.5vw, 8.5rem);
+    font-size: clamp(2.3rem, 4.6vw, 4.2rem);
     font-weight: 700;
-    line-height: 0.92;
-    letter-spacing: -0.04em;
+    line-height: 0.98;
+    letter-spacing: -0.035em;
     display: flex;
     flex-direction: column;
     margin: 0;
@@ -214,7 +239,7 @@ button {
     position: relative;
     display: inline-block;
     width: fit-content;
-    letter-spacing: -0.04em;
+    letter-spacing: -0.035em;
 }
 
 .name-chars-wrap {
@@ -253,7 +278,7 @@ button {
     z-index: 10;
     pointer-events: auto;
     will-change: transform;
-    margin-top: -65px;
+    margin-top: -48px;
     /* Sits directly on letter heights */
 }
 
@@ -306,7 +331,7 @@ button {
 }
 
 .pixel-svg {
-    width: clamp(28px, 3.5vw, 40px);
+    width: clamp(24px, 2.4vw, 30px);
     height: auto;
     display: block;
 }
@@ -436,18 +461,18 @@ button {
    3D Monitor & Interactive Social Hub
    ========================================================================== */
 .hero-3d-wrapper {
-    flex: 0 0 clamp(360px, 44vw, 530px);
+    flex: 0 0 clamp(280px, 34vw, 380px);
     perspective: 1200px;
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 5;
-    padding: 1rem 0;
+    padding: 0.5rem 0;
 }
 
 .monitor-3d {
     width: 100%;
-    max-width: 500px;
+    max-width: 380px;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -584,20 +609,20 @@ button {
 
 /* Screen Interactive App Cards */
 .screen-apps {
-    padding: 1.1rem;
+    padding: 0.85rem;
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 0.6rem;
 }
 
 .app-card {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0.8rem 1.05rem;
+    padding: 0.65rem 0.85rem;
     background: rgba(20, 20, 24, 0.8);
     border: 1px solid rgba(221, 221, 221, 0.1);
-    border-radius: 9px;
+    border-radius: 8px;
     transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     text-decoration: none;
     position: relative;
@@ -625,13 +650,13 @@ button {
 }
 
 .app-icon-box {
-    width: 38px;
-    height: 38px;
-    border-radius: 8px;
+    width: 32px;
+    height: 32px;
+    border-radius: 7px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 0.85rem;
+    margin-right: 0.75rem;
     flex-shrink: 0;
     transition: transform 0.25s ease;
 }
@@ -656,8 +681,8 @@ button {
 }
 
 .app-icon {
-    width: 20px;
-    height: 20px;
+    width: 17px;
+    height: 17px;
 }
 
 .app-details {
@@ -668,15 +693,15 @@ button {
 
 .app-name {
     font-family: var(--font-heading);
-    font-size: 0.96rem;
+    font-size: 0.88rem;
     font-weight: 600;
     color: var(--text-primary);
-    line-height: 1.25;
+    line-height: 1.2;
 }
 
 .app-meta {
     font-family: var(--font-mono);
-    font-size: 0.74rem;
+    font-size: 0.7rem;
     color: var(--text-muted);
 }
 
@@ -765,7 +790,7 @@ button {
    Selected Work Section
    ========================================================================== */
 .work-section {
-    padding: 5rem var(--page-padding-x) 6rem;
+    padding: 4.5rem var(--page-padding-x) 5rem;
     position: relative;
 }
 
@@ -773,7 +798,7 @@ button {
     display: flex;
     flex-wrap: wrap;
     gap: 0.75rem;
-    margin-bottom: 4.5rem;
+    margin-bottom: 3.5rem;
 }
 
 .filter-pill {
@@ -804,7 +829,7 @@ button {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-bottom: 1.5rem;
+    padding-bottom: 1.25rem;
     border-bottom: 1px solid var(--border-subtle);
 }
 
@@ -816,7 +841,7 @@ button {
 .project-item {
     display: flex;
     flex-direction: column;
-    padding: 2.5rem 0;
+    padding: 2rem 0;
     border-bottom: 1px solid var(--border-subtle);
     position: relative;
     text-decoration: none;
@@ -834,7 +859,7 @@ button {
 .project-left {
     display: flex;
     align-items: flex-start;
-    gap: clamp(1.5rem, 4.5vw, 4.5rem);
+    gap: clamp(1.5rem, 4vw, 3.5rem);
 }
 
 .project-num {
@@ -842,7 +867,7 @@ button {
     font-size: 0.85rem;
     color: var(--text-muted);
     font-weight: 500;
-    padding-top: 0.35rem;
+    padding-top: 0.25rem;
     transition: color 0.25s ease;
     min-width: 1.8rem;
 }
@@ -850,15 +875,15 @@ button {
 .project-info {
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
+    gap: 0.35rem;
 }
 
 .project-title {
     font-family: var(--font-heading);
-    font-size: clamp(1.8rem, 3.2vw, 2.75rem);
+    font-size: clamp(1.4rem, 2.5vw, 2.2rem);
     font-weight: 700;
     color: var(--text-primary);
-    line-height: 1.1;
+    line-height: 1.15;
     letter-spacing: -0.02em;
     transition: color 0.25s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -1060,18 +1085,18 @@ button {
    About Section
    ========================================================================== */
 .about-section {
-    padding: 6rem var(--page-padding-x) 7rem;
+    padding: 4.5rem var(--page-padding-x) 5rem;
     border-top: 1px solid var(--border-subtle);
 }
 
 .about-header {
-    margin-bottom: 3.5rem;
+    margin-bottom: 2.5rem;
 }
 
 .about-grid {
     display: grid;
-    grid-template-columns: minmax(280px, 420px) 1fr;
-    gap: clamp(2.5rem, 6vw, 6rem);
+    grid-template-columns: minmax(220px, 320px) 1fr;
+    gap: clamp(2rem, 4.5vw, 4.5rem);
     align-items: flex-start;
 }
 
@@ -1125,13 +1150,13 @@ button {
 .about-content {
     display: flex;
     flex-direction: column;
-    gap: 1.75rem;
-    padding-top: 0.5rem;
+    gap: 1.4rem;
+    padding-top: 0.25rem;
 }
 
 .about-lead {
     font-family: var(--font-body);
-    font-size: clamp(1.35rem, 2.1vw, 1.95rem);
+    font-size: clamp(1.15rem, 1.6vw, 1.5rem);
     font-weight: 400;
     line-height: 1.45;
     color: var(--text-primary);
@@ -1140,9 +1165,9 @@ button {
 
 .about-bio {
     font-family: var(--font-body);
-    font-size: clamp(0.95rem, 1.05vw, 1.05rem);
+    font-size: clamp(0.92rem, 1vw, 1rem);
     color: var(--text-secondary);
-    line-height: 1.7;
+    line-height: 1.65;
     max-width: 620px;
     font-weight: 400;
 }
@@ -1150,21 +1175,21 @@ button {
 .about-stats-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
-    padding-top: 2.5rem;
-    max-width: 600px;
+    gap: 1.75rem;
+    margin-top: 1.5rem;
+    padding-top: 2rem;
+    max-width: 540px;
 }
 
 .stat-item {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.35rem;
 }
 
 .stat-number {
     font-family: var(--font-heading);
-    font-size: clamp(2.4rem, 4vw, 3.5rem);
+    font-size: clamp(1.8rem, 2.8vw, 2.5rem);
     font-weight: 700;
     color: var(--accent-neon);
     line-height: 1;
@@ -1172,7 +1197,7 @@ button {
 
 .stat-label {
     font-family: var(--font-mono);
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     color: var(--text-muted);
     letter-spacing: 0.04em;
 }
@@ -1181,23 +1206,23 @@ button {
    Contact Section
    ========================================================================== */
 .contact-section {
-    padding: 6rem var(--page-padding-x) 5rem;
+    padding: 4.5rem var(--page-padding-x) 4.5rem;
     border-top: 1px solid var(--border-subtle);
 }
 
 .contact-header {
-    margin-bottom: 3.5rem;
+    margin-bottom: 2.5rem;
 }
 
 .contact-email-container {
     position: relative;
     display: inline-block;
-    margin-bottom: 4.5rem;
+    margin-bottom: 3.5rem;
 }
 
 .giant-email {
     font-family: var(--font-heading);
-    font-size: clamp(2.4rem, 6.8vw, 6.8rem);
+    font-size: clamp(1.8rem, 4.2vw, 3.5rem);
     font-weight: 700;
     color: var(--text-primary);
     letter-spacing: -0.03em;
@@ -1231,7 +1256,7 @@ button {
 
 .contact-socials {
     display: flex;
-    gap: 3rem;
+    gap: 2.5rem;
     flex-wrap: wrap;
 }
 
@@ -1268,11 +1293,18 @@ button {
    ========================================================================== */
 .footer {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 2rem var(--page-padding-x) 3rem;
+    justify-content: center;
     border-top: 1px solid var(--border-subtle);
     background-color: var(--bg-color);
+    padding: 1.75rem var(--page-padding-x) 2.5rem;
+}
+
+.footer-inner {
+    width: 100%;
+    max-width: var(--content-max-width);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 /* ==========================================================================
