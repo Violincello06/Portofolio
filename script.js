@@ -1,67 +1,204 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // 0. Welcome Preloader (1-Second Modern Developer Intro)
-    initPreloader();
+/**
+ * Ralip Pranaja Violincello - Portfolio
+ * Powered by Vue.js 3 Reactive Framework
+ */
 
-    // 1. Filter Pills Interaction
-    const filterPills = document.querySelectorAll('.filter-pill');
-    filterPills.forEach(pill => {
-        pill.addEventListener('click', () => {
-            filterPills.forEach(p => p.classList.remove('active'));
-            pill.classList.add('active');
+const { createApp, ref, computed, onMounted } = Vue;
+
+const app = createApp({
+    setup() {
+        // 1. Initial Data Source (Injected from PHP or default fallback)
+        const initialData = window.__PORTFOLIO_DATA__ || {};
+
+        const profile = ref(initialData.profile || {
+            role: "FullStack Web Developer",
+            location: "Indonesia",
+            firstName: "Ralip Pranaja",
+            lastName: "Violincello",
+            tagline: "A Web Developer Care About The Projects and Clean Code",
+            year: new Date().getFullYear(),
+            email: "pranaja0852@gmail.com",
+            city: "Solo, Indonesia",
+            avatar: "preview_project/me.png",
+            bio_lead: "Hi! My name is Ralip Pranaja Violincello, and I am a Full-Stack Developer.",
+            bio_detail: "Experience with modern technologies including Vue.js, React, Node.js, Express, PHP, and MySQL."
         });
-    });
 
-    // 2. Project Row Hover Previews
-    // Hover animation is handled purely and smoothly by CSS (:hover slide-in/out)
+        const stats = ref(initialData.stats || [
+            { number: '2+', label: 'Years active' },
+            { number: '1+', label: 'Projects' },
+            { number: '1', label: 'Continents' }
+        ]);
 
-    // 3. Dynamic Email Click to Copy with Tooltip
-    const emailLink = document.getElementById('emailLink');
-    const copyTooltip = document.getElementById('copyTooltip');
+        const filters = ref(initialData.filters || [
+            { id: 'all', label: 'All Projects' },
+            { id: 'brand-identity', label: 'Web App & Brand' },
+            { id: 'ui-design', label: 'UI/UX Design' }
+        ]);
 
-    if (emailLink && copyTooltip) {
-        emailLink.addEventListener('click', (e) => {
-            const rawHref = emailLink.getAttribute('href') || '';
-            const email = rawHref.replace('mailto:', '').trim() || emailLink.textContent.trim();
-
-            navigator.clipboard.writeText(email).then(() => {
-                copyTooltip.textContent = 'Copied to clipboard!';
-                copyTooltip.style.color = 'var(--accent-neon)';
-
-                setTimeout(() => {
-                    copyTooltip.textContent = 'Click to copy';
-                    copyTooltip.style.color = '';
-                }, 2500);
-            }).catch(() => {
-                // Default mailto fallback works
-            });
-        });
-    }
-
-    // 4. Smooth Anchor Link Navigation
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            const targetId = this.getAttribute('href');
-            if (targetId === '#' || targetId.length < 2) return;
-
-            const targetElement = document.querySelector(targetId);
-            if (targetElement) {
-                e.preventDefault();
-                targetElement.scrollIntoView({
-                    behavior: 'smooth'
-                });
+        const projects = ref(initialData.projects || [
+            {
+                id: '01',
+                title: 'Website SnapGear',
+                category: 'Website Layanan Penyewaan Kamera',
+                year: '2026',
+                preview_image: 'preview_project/snapgear.png',
+                filter_tag: 'brand-identity',
+                link: 'https://snapgear.xo.je/'
+            },
+            {
+                id: '02',
+                title: 'Cooming Soon Project',
+                category: 'Next Project Maybe With You!',
+                year: '2027',
+                preview_image: '',
+                filter_tag: 'ui-design',
+                link: '#project-2'
             }
+        ]);
+
+        const socials = ref(initialData.socials || [
+            { name: 'Instagram', url: 'https://instagram.com/ollecniloiv' },
+            { name: 'LinkedIn', url: 'https://www.linkedin.com/in/violincello' },
+            { name: 'Github', url: 'https://github.com/Violincello06' }
+        ]);
+
+        // 2. Interactive Reactive States
+        const activeFilter = ref('all');
+        const preloaderProgress = ref(0);
+        const preloaderStatus = ref('INITIALIZING SYSTEM...');
+        const isPreloaderLoaded = ref(false);
+        const isPreloaderHidden = ref(false);
+        const copyTooltipText = ref('Click to copy');
+        const isCopied = ref(false);
+        const systemTime = ref('');
+
+        // 3. Computed Properties
+        const filteredProjects = computed(() => {
+            if (activeFilter.value === 'all') {
+                return projects.value;
+            }
+            return projects.value.filter(p => p.filter_tag === activeFilter.value);
         });
-    });
 
-    // 5. 3D Interactive Monitor Parallax Physics
-    init3DMonitorPhysics();
+        const firstNameChars = computed(() => {
+            return (profile.value.firstName || '').split('');
+        });
 
-    // 6. Interactive Falling Code & Files Cursor Trail
-    initFallingCodeCursor();
+        // 4. Methods
+        const setFilter = (filterId) => {
+            activeFilter.value = filterId;
+        };
 
-    // 7. Dynamic Pixel Character Topographic Walking Engine
-    initPixelWalkingPhysics();
+        const copyEmail = () => {
+            const email = profile.value.email;
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(email).then(() => {
+                    isCopied.value = true;
+                    copyTooltipText.value = 'Copied to clipboard! ✨';
+                    setTimeout(() => {
+                        copyTooltipText.value = 'Click to copy';
+                        isCopied.value = false;
+                    }, 2500);
+                }).catch(() => {
+                    window.location.href = `mailto:${email}`;
+                });
+            } else {
+                window.location.href = `mailto:${email}`;
+            }
+        };
+
+        const updateClock = () => {
+            const now = new Date();
+            systemTime.value = now.toLocaleTimeString('en-US', {
+                hour12: false,
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+        };
+
+        // 5. Preloader Sequence
+        const startPreloader = () => {
+            document.body.classList.add('preloader-active');
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 2;
+                preloaderProgress.value = Math.min(progress, 100);
+
+                if (preloaderProgress.value < 35) {
+                    preloaderStatus.value = 'INITIALIZING VUE 3 ENGINE...';
+                } else if (preloaderProgress.value < 70) {
+                    preloaderStatus.value = 'COMPILING 3D ASSETS...';
+                } else if (preloaderProgress.value < 99) {
+                    preloaderStatus.value = 'PREPARING WORKSPACE...';
+                } else {
+                    preloaderStatus.value = 'WELCOME [ 200 OK ]';
+                }
+
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        isPreloaderLoaded.value = true;
+                        document.body.classList.remove('preloader-active');
+
+                        setTimeout(() => {
+                            isPreloaderHidden.value = true;
+                        }, 750);
+                    }, 200);
+                }
+            }, 36);
+        };
+
+        // 6. Lifecycle: Mount Subsystems
+        onMounted(() => {
+            startPreloader();
+            updateClock();
+            setInterval(updateClock, 1000);
+
+            // Smooth Scroll for Internal Anchors
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#' || targetId.length < 2) return;
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        e.preventDefault();
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+
+            // Initialize Animation Subsystems
+            init3DMonitorPhysics();
+            initFallingCodeCursor();
+            initPixelWalkingPhysics();
+        });
+
+        return {
+            profile,
+            stats,
+            filters,
+            projects,
+            socials,
+            activeFilter,
+            filteredProjects,
+            firstNameChars,
+            preloaderProgress,
+            preloaderStatus,
+            isPreloaderLoaded,
+            isPreloaderHidden,
+            copyTooltipText,
+            isCopied,
+            systemTime,
+            setFilter,
+            copyEmail
+        };
+    }
 });
+
+// Mount Vue 3 App
+app.mount('#app');
 
 /**
  * Dynamic Pixel Character Walking Engine (Follows Letter Heights & Jumps Gaps)
@@ -117,12 +254,12 @@ function initPixelWalkingPhysics() {
                 if (posX >= maxDist) {
                     posX = maxDist;
                     direction = -1;
-                    pauseTimer = 110; // Pause ~1.8s at end of name
+                    pauseTimer = 110;
                     if (avatarArt) avatarArt.style.transform = 'scaleX(1)';
                 } else if (posX <= 0) {
                     posX = 0;
                     direction = 1;
-                    pauseTimer = 110; // Pause ~1.8s at start of name
+                    pauseTimer = 110;
                     if (avatarArt) avatarArt.style.transform = 'scaleX(1)';
                 } else {
                     if (avatarArt) {
@@ -132,7 +269,6 @@ function initPixelWalkingPhysics() {
             }
         }
 
-        // Find character underneath the walker's center of gravity
         const footX = posX + walkerWidth / 2;
         let currentChar = 'R';
         let isOverSpace = false;
@@ -155,76 +291,24 @@ function initPixelWalkingPhysics() {
         }
 
         const heightRatio = letterHeightMap[currentChar] !== undefined ? letterHeightMap[currentChar] : 0.64;
-        
-        // Vertical step height calculation:
-        // Capital/Ascender (R, l, P) = sits directly on top (0px drop)
-        // Lowercase (a, r, n, p) = steps down into the valley (+28% fontSize)
         let calculatedDrop = (1.0 - heightRatio) * (fontSize * 0.48);
 
         if (isOverSpace) {
-            // Cute parabolic jump arc over the space gap between words
             const jumpHeight = fontSize * 0.32;
             const jumpArc = Math.sin(spaceRatio * Math.PI) * jumpHeight;
             calculatedDrop = (fontSize * 0.24) - jumpArc;
         }
 
-        // Stepping micro-bounce while in motion
         const isWalking = pauseTimer <= 0 && !isHovered;
         const stepBounce = isWalking ? Math.abs(Math.sin(stepCycle)) * (fontSize * 0.045) : 0;
 
         targetY = calculatedDrop - stepBounce;
-        posY += (targetY - posY) * 0.24; // Smooth spring interpolation
+        posY += (targetY - posY) * 0.24;
 
         walker.style.transform = `translate3d(${posX}px, ${posY}px, 0)`;
     }
 
     updateWalkerPhysics();
-}
-
-/**
- * 0. 2.5-Second Modern Developer Welcome Preloader
- */
-function initPreloader() {
-    const preloader = document.getElementById('welcomePreloader');
-    const counter = document.getElementById('preloaderCounter');
-    const bar = document.getElementById('preloaderBar');
-    const status = document.getElementById('preloaderStatus');
-    if (!preloader) return;
-
-    document.body.classList.add('preloader-active');
-
-    let progress = 0;
-    const interval = setInterval(() => {
-        progress += 2;
-        const currentVal = Math.min(progress, 100);
-
-        if (counter) counter.textContent = `${currentVal}%`;
-        if (bar) bar.style.width = `${currentVal}%`;
-
-        if (status) {
-            if (currentVal < 35) {
-                status.textContent = 'INITIALIZING SYSTEM...';
-            } else if (currentVal < 70) {
-                status.textContent = 'COMPILING 3D ASSETS...';
-            } else if (currentVal < 99) {
-                status.textContent = 'PREPARING WORKSPACE...';
-            } else {
-                status.textContent = 'WELCOME [ 200 OK ]';
-            }
-        }
-
-        if (progress >= 100) {
-            clearInterval(interval);
-            setTimeout(() => {
-                preloader.classList.add('loaded');
-                document.body.classList.remove('preloader-active');
-
-                setTimeout(() => {
-                    preloader.style.display = 'none';
-                }, 750);
-            }, 200);
-        }
-    }, 36); // 50 steps * 36ms = 1800ms loading + 200ms buffer + 700ms slide-up curtain = ~2.5 seconds!
 }
 
 /**
@@ -241,7 +325,6 @@ function init3DMonitorPhysics() {
     let currentRotateY = -8;
     let isHovered = false;
 
-    // Mouse Tracking across Hero section / Window
     window.addEventListener('mousemove', (e) => {
         const rect = container.getBoundingClientRect();
         const centerX = rect.left + rect.width / 2;
@@ -250,12 +333,10 @@ function init3DMonitorPhysics() {
         const deltaX = (e.clientX - centerX) / (window.innerWidth / 2);
         const deltaY = (e.clientY - centerY) / (window.innerHeight / 2);
 
-        // Smooth 3D tilt calculation
         targetRotateY = deltaX * 18 - 4;
         targetRotateX = -deltaY * 16 + 3;
     });
 
-    // Reset softly on mouse leave
     window.addEventListener('mouseleave', () => {
         targetRotateX = 3;
         targetRotateY = -6;
@@ -269,15 +350,12 @@ function init3DMonitorPhysics() {
         isHovered = false;
     });
 
-    // Animation Loop with Smooth Interpolation
     function animateMonitor() {
         requestAnimationFrame(animateMonitor);
 
-        // Smooth Easing (Lerp)
         currentRotateX += (targetRotateX - currentRotateX) * 0.08;
         currentRotateY += (targetRotateY - currentRotateY) * 0.08;
 
-        // Subtle floating idle motion
         const time = Date.now() * 0.0018;
         const floatY = Math.sin(time) * 4;
 
@@ -297,7 +375,6 @@ function init3DMonitorPhysics() {
  * Interactive Falling Code & File Snippets Cursor Trail
  */
 function initFallingCodeCursor() {
-    // 1. Create and setup overlay Canvas
     const canvas = document.createElement('canvas');
     canvas.className = 'code-trail-canvas';
     document.body.appendChild(canvas);
@@ -319,13 +396,11 @@ function initFallingCodeCursor() {
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    // 2. Data Pools: Files, Code Keywords, Syntax & Operators
     const fileItems = [
-        '📄 index.js',
+        '⚡ App.vue',
         '🐘 app.php',
         '🎨 style.css',
         '⚡ api.ts',
-        '⚛️ layout.jsx',
         '📦 package.json',
         '⚙️ .env',
         '🚀 deploy.sh',
@@ -334,30 +409,27 @@ function initFallingCodeCursor() {
     ];
 
     const codeItems = [
-        '</>',
-        '{ ... }',
-        'const',
-        'let',
-        'function()',
-        '=> { }',
-        'async',
-        'await',
+        '<template>',
+        'ref()',
+        'computed()',
+        'v-for',
+        'v-if',
+        'createApp()',
         '$_POST',
         '<?php',
         'return true;',
         'git push',
-        'npm run dev',
         '===',
         '200 OK',
         '010101',
         '<div>',
         'console.log()',
-        'import React',
-        'export default'
+        'Vue.js 3'
     ];
 
     const colorPalette = [
         '#CB2957', // Signature neon crimson
+        '#42B883', // Vue Emerald Green
         '#00FF9D', // Terminal matrix emerald
         '#00F0FF', // Cyber cyan
         '#FF5E89', // Neon rose
@@ -367,7 +439,7 @@ function initFallingCodeCursor() {
     ];
 
     const particles = [];
-    const maxParticles = 20; // Lightweight limit
+    const maxParticles = 20;
 
     let lastX = null;
     let lastY = null;
@@ -386,7 +458,6 @@ function initFallingCodeCursor() {
 
             this.color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
 
-            // Lightweight motion
             const angle = isBurst
                 ? Math.random() * Math.PI * 2
                 : (Math.random() * Math.PI - Math.PI / 2);
@@ -442,7 +513,6 @@ function initFallingCodeCursor() {
             const boxHeight = this.fontSize + paddingY * 2;
 
             if (this.isFile) {
-                // Crisp Lightweight Mini File Badge
                 context.fillStyle = 'rgba(10, 10, 14, 0.9)';
                 context.strokeStyle = this.color;
                 context.lineWidth = 1;
@@ -469,7 +539,6 @@ function initFallingCodeCursor() {
                 context.textBaseline = 'middle';
                 context.fillText(this.text, 0, 0);
             } else {
-                // Crisp Monospace Code Token
                 context.fillStyle = this.color;
                 context.textAlign = 'center';
                 context.textBaseline = 'middle';
@@ -496,7 +565,6 @@ function initFallingCodeCursor() {
         }
     }
 
-    // 3. Pointer & Mouse Movement Tracking with Throttled Spawning
     let lastSpawnTime = 0;
     function handlePointerMove(clientX, clientY) {
         const now = Date.now();
@@ -513,7 +581,6 @@ function initFallingCodeCursor() {
         const dy = clientY - lastY;
         const dist = Math.hypot(dx, dy);
 
-        // Highly optimized: only spawn on 45px cursor movement or 140ms interval
         if (dist > 45 || (now - lastSpawnTime > 140 && dist > 10)) {
             addParticle(clientX, clientY);
             lastSpawnTime = now;
@@ -532,7 +599,6 @@ function initFallingCodeCursor() {
         }
     }, { passive: true });
 
-    // Minimal burst on click (4 particles)
     window.addEventListener('click', (e) => {
         for (let i = 0; i < 4; i++) {
             addParticle(e.clientX, e.clientY, true);
@@ -544,7 +610,6 @@ function initFallingCodeCursor() {
         lastY = null;
     });
 
-    // 4. Optimized Render Loop (auto-sleeps when idle)
     function animateFallingCode() {
         ctx.clearRect(0, 0, width, height);
 
@@ -565,4 +630,3 @@ function initFallingCodeCursor() {
         }
     }
 }
-

@@ -13,7 +13,7 @@ $profile = [
     'city' => "Solo, Indonesia",
     'avatar' => "preview_project/me.png",
     'bio_lead' => "Hi! My name is Ralip Pranaja Violincello, and I am a Full-Stack Developer. I began delving into the world of programming while studying Computer Engineering at Universitas Muhammadiyah PKU Surakarta.",
-    'bio_detail' => "From Indonesia To International, I am always working hard to make my dream come true. I have experience with a variety of technologies and frameworks, including React, Node.js, Express, MongoDB, and MySQL."
+    'bio_detail' => "From Indonesia To International, I am always working hard to make my dream come true. I have experience with a variety of technologies and frameworks, including Vue.js, React, Node.js, Express, MongoDB, and MySQL."
 ];
 
 $stats = [
@@ -23,7 +23,9 @@ $stats = [
 ];
 
 $filters = [
-    ['id' => 'all', 'label' => 'Projects', 'active' => true]
+    ['id' => 'all', 'label' => 'All Projects'],
+    ['id' => 'brand-identity', 'label' => 'Web App & Brand'],
+    ['id' => 'ui-design', 'label' => 'UI/UX Design']
 ];
 
 $projects = [
@@ -74,259 +76,267 @@ $socials = [
 
 <body class="notranslate">
 
-    <!-- Welcome Preloader (1-Second Fast Developer Reveal) -->
-    <div class="welcome-preloader" id="welcomePreloader">
-        <div class="preloader-inner">
-            <div class="preloader-badge">
-                <span class="status-dot"></span>
-                <span class="mono-label">About Me</span>
-            </div>
-            <h2 class="preloader-title">
-                <span class="preloader-greeting">Who Am I?</span>
-                <span class="preloader-name"><?= htmlspecialchars($profile['firstName'] . ' ' . $profile['lastName']); ?></span>
-            </h2>
-            <div class="preloader-progress-track">
-                <div class="preloader-progress-bar" id="preloaderBar"></div>
-            </div>
-            <div class="preloader-footer">
-                <span class="mono-label preloader-status" id="preloaderStatus">Loading...</span>
-                <span class="mono-label preloader-count" id="preloaderCounter">0%</span>
+    <div id="app" v-cloak>
+        <!-- Welcome Preloader (Fast Developer Reveal with Vue.js) -->
+        <div class="welcome-preloader" id="welcomePreloader" :class="{ 'loaded': isPreloaderLoaded }" v-show="!isPreloaderHidden">
+            <div class="preloader-inner">
+                <div class="preloader-badge">
+                    <span class="status-dot"></span>
+                    <span class="mono-label">About Me</span>
+                </div>
+                <h2 class="preloader-title">
+                    <span class="preloader-greeting">Who Am I?</span>
+                    <span class="preloader-name">{{ profile.firstName }} {{ profile.lastName }}</span>
+                </h2>
+                <div class="preloader-progress-track">
+                    <div class="preloader-progress-bar" id="preloaderBar" :style="{ width: preloaderProgress + '%' }"></div>
+                </div>
+                <div class="preloader-footer">
+                    <span class="mono-label preloader-status" id="preloaderStatus">{{ preloaderStatus }}</span>
+                    <span class="mono-label preloader-count" id="preloaderCounter">{{ preloaderProgress }}%</span>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Ambient Animated Aurora Mesh Background -->
-    <div class="ambient-aurora-bg" aria-hidden="true">
-        <div class="aurora-orb aurora-orb-1"></div>
-        <div class="aurora-orb aurora-orb-2"></div>
-        <div class="aurora-orb aurora-orb-3"></div>
-        <div class="aurora-grid"></div>
-    </div>
-
-    <!-- Header / Navigation -->
-    <header class="navbar">
-        <div class="nav-left">
-            <a href="#cv" class="cv-link">
-                <span class="status-dot"></span>
-                <span class="cv-text">CV</span>
-            </a>
+        <!-- Ambient Animated Aurora Mesh Background -->
+        <div class="ambient-aurora-bg" aria-hidden="true">
+            <div class="aurora-orb aurora-orb-1"></div>
+            <div class="aurora-orb aurora-orb-2"></div>
+            <div class="aurora-orb aurora-orb-3"></div>
+            <div class="aurora-grid"></div>
         </div>
-        <nav class="nav-right">
-            <a href="#work" class="nav-item">Work</a>
-            <a href="#about" class="nav-item">About</a>
-            <a href="#contact" class="nav-item">Contact</a>
-        </nav>
-    </header>
 
-    <main>
-        <!-- Hero Section -->
-        <section class="hero-section" id="hero">
-            <div class="hero-top-tag">
-                <span class="mono-label"><?= htmlspecialchars($profile['role']); ?> — <?= htmlspecialchars($profile['location']); ?></span>
+        <!-- Header / Navigation -->
+        <header class="navbar">
+            <div class="nav-left">
+                <a href="#cv" class="cv-link">
+                    <span class="status-dot"></span>
+                    <span class="cv-text">CV</span>
+                </a>
             </div>
+            <nav class="nav-right">
+                <a href="#work" class="nav-item">Work</a>
+                <a href="#about" class="nav-item">About</a>
+                <a href="#contact" class="nav-item">Contact</a>
+            </nav>
+        </header>
 
-            <div class="hero-main-layout">
-                <div class="hero-title-wrap">
-                    <h1 class="hero-name">
-                        <span class="first-name" id="heroFirstName">
-                            <span class="name-chars-wrap"><?php 
-                                $firstNameChars = mb_str_split($profile['firstName']);
-                                foreach ($firstNameChars as $char) {
-                                    if ($char === ' ') {
-                                        echo '<span class="char-step char-space">&nbsp;</span>';
-                                    } else {
-                                        echo '<span class="char-step" data-char="' . htmlspecialchars($char) . '">' . htmlspecialchars($char) . '</span>';
-                                    }
-                                }
-                            ?></span>
-                            <a href="#contact" class="pixel-walking-character" id="pixelWalker" title="Click to Say Hello!">
-                                <span class="pixel-speech-bubble">
-                                    <span class="bubble-text">Hallo :]</span> <span class="wave-emoji">👋</span>
-                                </span>
-                                <span class="pixel-avatar-art">
-                                    <svg class="pixel-svg" viewBox="0 0 24 26" width="34" height="37" shape-rendering="crispEdges">
-                                        <!-- Left Leg (Stepping animation) -->
-                                        <g class="pixel-leg-left">
-                                            <rect x="7" y="21" width="4" height="3" fill="#0D0D10"/>
-                                            <rect x="7" y="24" width="3" height="2" fill="#222228"/>
-                                        </g>
-                                        <!-- Right Leg (Stepping animation) -->
-                                        <g class="pixel-leg-right">
-                                            <rect x="13" y="21" width="4" height="3" fill="#0D0D10"/>
-                                            <rect x="14" y="24" width="3" height="2" fill="#222228"/>
-                                        </g>
-                                        
-                                        <!-- Suit / Body -->
-                                        <rect x="6" y="14" width="12" height="7" fill="#141418"/>
-                                        <rect x="9" y="14" width="6" height="4" fill="#FFFFFF"/>
-                                        <rect x="11" y="15" width="2" height="5" fill="#CB2957"/>
-                                        
-                                        <!-- Left Arm -->
-                                        <rect x="4" y="14" width="2" height="6" fill="#141418"/>
-                                        <rect x="4" y="20" width="2" height="2" fill="#F5C09B"/>
-                                        
-                                        <!-- Head & Neck -->
-                                        <rect x="10" y="13" width="4" height="1" fill="#E2A984"/>
-                                        <rect x="7" y="5" width="10" height="8" fill="#F5C09B"/>
-                                        
-                                        <!-- Cheeks Blush -->
-                                        <rect x="7" y="10" width="2" height="1" fill="#FF6584"/>
-                                        <rect x="15" y="10" width="2" height="1" fill="#FF6584"/>
-                                        
-                                        <!-- Eyes with Sparkle -->
-                                        <rect x="9" y="8" width="2" height="2" fill="#111111"/>
-                                        <rect x="9" y="8" width="1" height="1" fill="#FFFFFF"/>
-                                        <rect x="13" y="8" width="2" height="2" fill="#111111"/>
-                                        <rect x="13" y="8" width="1" height="1" fill="#FFFFFF"/>
-                                        
-                                        <!-- Friendly Smile -->
-                                        <rect x="11" y="11" width="2" height="1" fill="#9E5A44"/>
-                                        
-                                        <!-- Black Middle-part Hair -->
-                                        <rect x="6" y="2" width="12" height="3" fill="#111116"/>
-                                        <rect x="5" y="4" width="3" height="5" fill="#111116"/>
-                                        <rect x="16" y="4" width="3" height="5" fill="#111116"/>
-                                        <rect x="8" y="5" width="3" height="2" fill="#111116"/>
-                                        <rect x="13" y="5" width="3" height="2" fill="#111116"/>
-                                        <rect x="11" y="2" width="2" height="2" fill="#282834"/>
-                                        
-                                        <!-- Animated Waving Right Arm -->
-                                        <g class="pixel-waving-arm">
-                                            <rect x="17" y="13" width="3" height="2" fill="#141418"/>
-                                            <rect x="19" y="10" width="2" height="3" fill="#141418"/>
-                                            <rect x="19" y="7" width="3" height="3" fill="#F5C09B"/>
-                                            <rect x="20" y="5" width="2" height="2" fill="#F5C09B"/>
-                                        </g>
-                                    </svg>
-                                </span>
-                            </a>
-                        </span>
-                        <span class="last-name"><?= htmlspecialchars($profile['lastName']); ?></span>
-                    </h1>
+        <main>
+            <!-- Hero Section -->
+            <section class="hero-section" id="hero">
+                <div class="hero-top-tag">
+                    <span class="mono-label">{{ profile.role }} — {{ profile.location }}</span>
                 </div>
 
-                <!-- Interactive 3D Monitor Container -->
-                <div class="hero-3d-wrapper" id="hero3dContainer">
-                    <div class="monitor-3d" id="monitor3D">
-                        <!-- Floating Neon Glow -->
-                        <div class="monitor-glow"></div>
-                        
-                        <!-- Monitor Frame & Bezel -->
-                        <div class="monitor-bezel">
-                            <div class="monitor-camera"></div>
+                <div class="hero-main-layout">
+                    <div class="hero-title-wrap">
+                        <h1 class="hero-name">
+                            <span class="first-name" id="heroFirstName">
+                                <span class="name-chars-wrap">
+                                    <template v-for="(char, index) in firstNameChars" :key="index">
+                                        <span v-if="char === ' '" class="char-step char-space">&nbsp;</span>
+                                        <span v-else class="char-step" :data-char="char">{{ char }}</span>
+                                    </template>
+                                </span>
+                                <a href="#contact" class="pixel-walking-character" id="pixelWalker" title="Click to Say Hello!">
+                                    <span class="pixel-speech-bubble">
+                                        <span class="bubble-text">Hallo :]</span> <span class="wave-emoji">👋</span>
+                                    </span>
+                                    <span class="pixel-avatar-art">
+                                        <svg class="pixel-svg" viewBox="0 0 24 26" width="34" height="37" shape-rendering="crispEdges">
+                                            <!-- Left Leg (Stepping animation) -->
+                                            <g class="pixel-leg-left">
+                                                <rect x="7" y="21" width="4" height="3" fill="#0D0D10"/>
+                                                <rect x="7" y="24" width="3" height="2" fill="#222228"/>
+                                            </g>
+                                            <!-- Right Leg (Stepping animation) -->
+                                            <g class="pixel-leg-right">
+                                                <rect x="13" y="21" width="4" height="3" fill="#0D0D10"/>
+                                                <rect x="14" y="24" width="3" height="2" fill="#222228"/>
+                                            </g>
+                                            
+                                            <!-- Suit / Body -->
+                                            <rect x="6" y="14" width="12" height="7" fill="#141418"/>
+                                            <rect x="9" y="14" width="6" height="4" fill="#FFFFFF"/>
+                                            <rect x="11" y="15" width="2" height="5" fill="#CB2957"/>
+                                            
+                                            <!-- Left Arm -->
+                                            <rect x="4" y="14" width="2" height="6" fill="#141418"/>
+                                            <rect x="4" y="20" width="2" height="2" fill="#F5C09B"/>
+                                            
+                                            <!-- Head & Neck -->
+                                            <rect x="10" y="13" width="4" height="1" fill="#E2A984"/>
+                                            <rect x="7" y="5" width="10" height="8" fill="#F5C09B"/>
+                                            
+                                            <!-- Cheeks Blush -->
+                                            <rect x="7" y="10" width="2" height="1" fill="#FF6584"/>
+                                            <rect x="15" y="10" width="2" height="1" fill="#FF6584"/>
+                                            
+                                            <!-- Eyes with Sparkle -->
+                                            <rect x="9" y="8" width="2" height="2" fill="#111111"/>
+                                            <rect x="9" y="8" width="1" height="1" fill="#FFFFFF"/>
+                                            <rect x="13" y="8" width="2" height="2" fill="#111111"/>
+                                            <rect x="13" y="8" width="1" height="1" fill="#FFFFFF"/>
+                                            
+                                            <!-- Friendly Smile -->
+                                            <rect x="11" y="11" width="2" height="1" fill="#9E5A44"/>
+                                            
+                                            <!-- Black Middle-part Hair -->
+                                            <rect x="6" y="2" width="12" height="3" fill="#111116"/>
+                                            <rect x="5" y="4" width="3" height="5" fill="#111116"/>
+                                            <rect x="16" y="4" width="3" height="5" fill="#111116"/>
+                                            <rect x="8" y="5" width="3" height="2" fill="#111116"/>
+                                            <rect x="13" y="5" width="3" height="2" fill="#111116"/>
+                                            <rect x="11" y="2" width="2" height="2" fill="#282834"/>
+                                            
+                                            <!-- Animated Waving Right Arm -->
+                                            <g class="pixel-waving-arm">
+                                                <rect x="17" y="13" width="3" height="2" fill="#141418"/>
+                                                <rect x="19" y="10" width="2" height="3" fill="#141418"/>
+                                                <rect x="19" y="7" width="3" height="3" fill="#F5C09B"/>
+                                                <rect x="20" y="5" width="2" height="2" fill="#F5C09B"/>
+                                            </g>
+                                        </svg>
+                                    </span>
+                                </a>
+                            </span>
+                            <span class="last-name">{{ profile.lastName }}</span>
+                        </h1>
+                    </div>
 
-                            <!-- Screen Display -->
-                            <div class="monitor-screen">
-                                <!-- Screen Header -->
-                                <div class="screen-header">
-                                    <div class="screen-controls">
-                                        <span class="ctrl-dot close"></span>
-                                        <span class="ctrl-dot min"></span>
-                                        <span class="ctrl-dot max"></span>
+                    <!-- Interactive 3D Monitor Container -->
+                    <div class="hero-3d-wrapper" id="hero3dContainer">
+                        <div class="monitor-3d" id="monitor3D">
+                            <!-- Floating Neon Glow -->
+                            <div class="monitor-glow"></div>
+                            
+                            <!-- Monitor Frame & Bezel -->
+                            <div class="monitor-bezel">
+                                <div class="monitor-camera"></div>
+
+                                <!-- Screen Display -->
+                                <div class="monitor-screen">
+                                    <!-- Screen Header -->
+                                    <div class="screen-header">
+                                        <div class="screen-controls">
+                                            <span class="ctrl-dot close"></span>
+                                            <span class="ctrl-dot min"></span>
+                                            <span class="ctrl-dot max"></span>
+                                        </div>
+                                        <div class="screen-title">
+                                            <span class="screen-pulse-dot"></span>
+                                            violincello_os ~ /vue3-hub
+                                        </div>
+                                        <div class="screen-badge">ONLINE {{ systemTime }}</div>
                                     </div>
-                                    <div class="screen-title">
-                                        <span class="screen-pulse-dot"></span>
-                                        violincello_os ~ /social-hub
+
+                                    <!-- Screen Apps Grid -->
+                                    <div class="screen-apps">
+                                        <!-- GitHub App -->
+                                        <a href="https://github.com/Violincello06" target="_blank" rel="noopener noreferrer" class="app-card github-app" title="Visit GitHub Profile">
+                                            <div class="app-icon-box">
+                                                <svg class="app-icon" viewBox="0 0 24 24" fill="currentColor">
+                                                    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                                                </svg>
+                                            </div>
+                                            <div class="app-details">
+                                                <span class="app-name">GitHub</span>
+                                                <span class="app-meta">@Violincello06</span>
+                                            </div>
+                                            <span class="app-action-arrow">↗</span>
+                                        </a>
+
+                                        <!-- LinkedIn App -->
+                                        <a href="https://www.linkedin.com/in/violincello" target="_blank" rel="noopener noreferrer" class="app-card linkedin-app" title="Visit LinkedIn Profile">
+                                            <div class="app-icon-box">
+                                                <svg class="app-icon" viewBox="0 0 24 24" fill="currentColor">
+                                                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                                                </svg>
+                                            </div>
+                                            <div class="app-details">
+                                                <span class="app-name">LinkedIn</span>
+                                                <span class="app-meta">Ralip Pranaja</span>
+                                            </div>
+                                            <span class="app-action-arrow">↗</span>
+                                        </a>
+
+                                        <!-- Instagram App -->
+                                        <a href="https://instagram.com/ollecniloiv" target="_blank" rel="noopener noreferrer" class="app-card instagram-app" title="Visit Instagram Profile">
+                                            <div class="app-icon-box">
+                                                <svg class="app-icon" viewBox="0 0 24 24" fill="currentColor">
+                                                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                                                </svg>
+                                            </div>
+                                            <div class="app-details">
+                                                <span class="app-name">Instagram</span>
+                                                <span class="app-meta">@ollecniloiv</span>
+                                            </div>
+                                            <span class="app-action-arrow">↗</span>
+                                        </a>
                                     </div>
-                                    <div class="screen-badge">ONLINE</div>
-                                </div>
 
-                                <!-- Screen Apps Grid -->
-                                <div class="screen-apps">
-                                    <!-- GitHub App -->
-                                    <a href="https://github.com/Violincello06" target="_blank" rel="noopener noreferrer" class="app-card github-app" title="Visit GitHub Profile">
-                                        <div class="app-icon-box">
-                                            <svg class="app-icon" viewBox="0 0 24 24" fill="currentColor">
-                                                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
-                                            </svg>
-                                        </div>
-                                        <div class="app-details">
-                                            <span class="app-name">GitHub</span>
-                                            <span class="app-meta">@Violincello06</span>
-                                        </div>
-                                        <span class="app-action-arrow">↗</span>
-                                    </a>
-
-                                    <!-- LinkedIn App -->
-                                    <a href="https://www.linkedin.com/in/violincello" target="_blank" rel="noopener noreferrer" class="app-card linkedin-app" title="Visit LinkedIn Profile">
-                                        <div class="app-icon-box">
-                                            <svg class="app-icon" viewBox="0 0 24 24" fill="currentColor">
-                                                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-                                            </svg>
-                                        </div>
-                                        <div class="app-details">
-                                            <span class="app-name">LinkedIn</span>
-                                            <span class="app-meta">Ralip Pranaja</span>
-                                        </div>
-                                        <span class="app-action-arrow">↗</span>
-                                    </a>
-
-                                    <!-- Instagram App -->
-                                    <a href="https://instagram.com/ollecniloiv" target="_blank" rel="noopener noreferrer" class="app-card instagram-app" title="Visit Instagram Profile">
-                                        <div class="app-icon-box">
-                                            <svg class="app-icon" viewBox="0 0 24 24" fill="currentColor">
-                                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                                            </svg>
-                                        </div>
-                                        <div class="app-details">
-                                            <span class="app-name">Instagram</span>
-                                            <span class="app-meta">@ollecniloiv</span>
-                                        </div>
-                                        <span class="app-action-arrow">↗</span>
-                                    </a>
-                                </div>
-
-                                <!-- Screen Footer -->
-                                <div class="screen-footer-status">
-                                    <span class="prompt-arrow">&gt;</span> Click any card to launch link
+                                    <!-- Screen Footer -->
+                                    <div class="screen-footer-status">
+                                        <span class="prompt-arrow">&gt;</span> Vue 3 Reactive OS Hub Active
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Monitor Stand -->
-                        <div class="monitor-stand-neck"></div>
-                        <div class="monitor-stand-base"></div>
+                            <!-- Monitor Stand -->
+                            <div class="monitor-stand-neck"></div>
+                            <div class="monitor-stand-base"></div>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="hero-bottom-meta">
-                <p class="hero-tagline"><?= htmlspecialchars($profile['tagline']); ?></p>
-                <div class="hero-year">© <?= htmlspecialchars($profile['year']); ?></div>
-            </div>
-        </section>
+                <div class="hero-bottom-meta">
+                    <p class="hero-tagline">{{ profile.tagline }}</p>
+                    <div class="hero-year">© {{ profile.year }}</div>
+                </div>
+            </section>
 
-        <!-- Selected Work Section -->
-        <section class="work-section" id="work">
-            <!-- Filter Pills -->
-            <div class="filter-bar">
-                <?php foreach ($filters as $filter): ?>
-                    <button class="filter-pill <?= $filter['active'] ? 'active' : ''; ?>" data-filter="<?= htmlspecialchars($filter['id']); ?>">
-                        <?= htmlspecialchars($filter['label']); ?>
+            <!-- Selected Work Section -->
+            <section class="work-section" id="work">
+                <!-- Filter Pills with Vue Reactive Click -->
+                <div class="filter-bar">
+                    <button 
+                        v-for="filter in filters" 
+                        :key="filter.id"
+                        class="filter-pill" 
+                        :class="{ 'active': activeFilter === filter.id }"
+                        @click="setFilter(filter.id)"
+                    >
+                        {{ filter.label }}
                     </button>
-                <?php endforeach; ?>
-            </div>
+                </div>
 
-            <!-- Section Meta Header -->
-            <div class="section-meta-header">
-                <span class="mono-label">Selected Work</span>
-                <span class="mono-label">2025–2026</span>
-            </div>
+                <!-- Section Meta Header -->
+                <div class="section-meta-header">
+                    <span class="mono-label">Selected Work</span>
+                    <span class="mono-label">2025–2026</span>
+                </div>
 
-            <!-- Projects Table / List -->
-            <div class="projects-list">
-                <?php foreach ($projects as $project): ?>
-                    <a href="<?= htmlspecialchars($project['link']); ?>" class="project-item" data-category="<?= htmlspecialchars($project['filter_tag']); ?>" <?= (strpos($project['link'], 'http') === 0) ? 'target="_blank" rel="noopener noreferrer"' : ''; ?>>
+                <!-- Projects Table / List rendered by Vue -->
+                <div class="projects-list">
+                    <a 
+                        v-for="project in filteredProjects"
+                        :key="project.id"
+                        :href="project.link" 
+                        class="project-item" 
+                        :data-category="project.filter_tag" 
+                        :target="project.link.startsWith('http') ? '_blank' : null"
+                        :rel="project.link.startsWith('http') ? 'noopener noreferrer' : null"
+                    >
                         <div class="project-header-row">
                             <div class="project-left">
-                                <span class="project-num"><?= htmlspecialchars($project['id']); ?></span>
+                                <span class="project-num">{{ project.id }}</span>
                                 <div class="project-info">
-                                    <h3 class="project-title"><?= htmlspecialchars($project['title']); ?></h3>
-                                    <span class="project-category"><?= htmlspecialchars($project['category']); ?></span>
+                                    <h3 class="project-title">{{ project.title }}</h3>
+                                    <span class="project-category">{{ project.category }}</span>
                                 </div>
                             </div>
                             <div class="project-right">
-                                <span class="project-year"><?= htmlspecialchars($project['year']); ?></span>
+                                <span class="project-year">{{ project.year }}</span>
                                 <span class="project-action-arrow">↗</span>
                             </div>
                         </div>
@@ -334,95 +344,123 @@ $socials = [
                         <!-- Full-Width Bottom Preview Container -->
                         <div class="project-preview-box">
                             <div class="image-placeholder">
-                                <img src="<?= htmlspecialchars($project['preview_image']); ?>" alt="<?= htmlspecialchars($project['title']); ?> Preview" class="preview-img">
+                                <img v-if="project.preview_image" :src="project.preview_image" :alt="project.title + ' Preview'" class="preview-img">
                                 <div class="placeholder-guide">
                                     <span class="guide-status-dot"></span>
-                                    <span class="guide-title">UPCOMING PROJECT</span>
-                                    <span class="guide-subtitle"><?= htmlspecialchars($project['category']); ?></span>
+                                    <span class="guide-title">{{ project.preview_image ? 'PROJECT PREVIEW' : 'UPCOMING PROJECT' }}</span>
+                                    <span class="guide-subtitle">{{ project.category }}</span>
                                 </div>
                                 <div class="preview-hover-tag">
-                                    <span><?= (strpos($project['link'], 'http') === 0) ? 'Open Live Website ↗' : 'View Details ↗'; ?></span>
+                                    <span>{{ project.link.startsWith('http') ? 'Open Live Website ↗' : 'View Details ↗' }}</span>
                                 </div>
                             </div>
                         </div>
                     </a>
-                <?php endforeach; ?>
-            </div>
-        </section>
+                </div>
+            </section>
 
-        <!-- About Section -->
-        <section class="about-section" id="about">
-            <div class="about-header">
-                <span class="mono-label">About</span>
-            </div>
+            <!-- About Section -->
+            <section class="about-section" id="about">
+                <div class="about-header">
+                    <span class="mono-label">About</span>
+                </div>
 
-            <div class="about-grid">
-                <!-- Left: Portrait Image Box -->
-                <div class="about-image-wrapper">
-                    <div class="about-portrait-placeholder">
-                        <img src="<?= htmlspecialchars($profile['avatar']); ?>?v=<?= time(); ?>" alt="<?= htmlspecialchars($profile['firstName'] . ' ' . $profile['lastName']); ?>" class="about-portrait-img">
-                        <div class="placeholder-guide">
-                            <span><?= htmlspecialchars($profile['firstName'] . ' ' . $profile['lastName']); ?></span>
+                <div class="about-grid">
+                    <!-- Left: Portrait Image Box -->
+                    <div class="about-image-wrapper">
+                        <div class="about-portrait-placeholder">
+                            <img :src="profile.avatar" :alt="profile.firstName + ' ' + profile.lastName" class="about-portrait-img">
+                            <div class="placeholder-guide">
+                                <span>{{ profile.firstName }} {{ profile.lastName }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Text Content & Stats -->
+                    <div class="about-content">
+                        <h2 class="about-lead">
+                            {{ profile.bio_lead }}
+                        </h2>
+                        <p class="about-bio">
+                            {{ profile.bio_detail }}
+                        </p>
+
+                        <!-- Stats Counter Grid -->
+                        <div class="about-stats-grid">
+                            <div v-for="(stat, idx) in stats" :key="idx" class="stat-item">
+                                <span class="stat-number">{{ stat.number }}</span>
+                                <span class="stat-label">{{ stat.label }}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </section>
 
-                <!-- Right: Text Content & Stats -->
-                <div class="about-content">
-                    <h2 class="about-lead">
-                        <?= htmlspecialchars($profile['bio_lead']); ?>
-                    </h2>
-                    <p class="about-bio">
-                        <?= htmlspecialchars($profile['bio_detail']); ?>
-                    </p>
-
-                    <!-- Stats Counter Grid -->
-                    <div class="about-stats-grid">
-                        <?php foreach ($stats as $stat): ?>
-                            <div class="stat-item">
-                                <span class="stat-number"><?= htmlspecialchars($stat['number']); ?></span>
-                                <span class="stat-label"><?= htmlspecialchars($stat['label']); ?></span>
-                            </div>
-                        <?php endforeach; ?>
-                    </div>
+            <!-- Contact Section -->
+            <section class="contact-section" id="contact">
+                <div class="contact-header">
+                    <span class="mono-label">Get in touch</span>
                 </div>
-            </div>
-        </section>
 
-        <!-- Contact Section -->
-        <section class="contact-section" id="contact">
-            <div class="contact-header">
-                <span class="mono-label">Get in touch</span>
-            </div>
-
-            <div class="contact-email-container">
-                <a href="mailto:<?= htmlspecialchars($profile['email']); ?>" class="giant-email" id="emailLink" title="Click to copy email">
-                    <?= htmlspecialchars($profile['email']); ?>
-                </a>
-                <span class="copy-tooltip" id="copyTooltip">Click to copy</span>
-            </div>
-
-            <div class="contact-socials">
-                <?php foreach ($socials as $social): ?>
-                    <a href="<?= htmlspecialchars($social['url']); ?>" target="_blank" rel="noopener noreferrer" class="social-link">
-                        <?= htmlspecialchars($social['name']); ?>
+                <div class="contact-email-container">
+                    <a 
+                        :href="'mailto:' + profile.email" 
+                        class="giant-email" 
+                        id="emailLink" 
+                        :title="'Click to copy ' + profile.email"
+                        @click.prevent="copyEmail"
+                    >
+                        {{ profile.email }}
                     </a>
-                <?php endforeach; ?>
+                    <span class="copy-tooltip" id="copyTooltip" :style="{ color: isCopied ? 'var(--accent-neon)' : '' }">
+                        {{ copyTooltipText }}
+                    </span>
+                </div>
+
+                <div class="contact-socials">
+                    <a 
+                        v-for="(social, idx) in socials" 
+                        :key="idx"
+                        :href="social.url" 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        class="social-link"
+                    >
+                        {{ social.name }}
+                    </a>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-left">
+                <span class="mono-label">{{ profile.firstName }} {{ profile.lastName }} — Portfolio (Vue.js 3)</span>
             </div>
-        </section>
-    </main>
+            <div class="footer-right">
+                <span class="mono-label">{{ profile.city }}</span>
+            </div>
+        </footer>
+    </div>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-left">
-            <span class="mono-label"><?= htmlspecialchars($profile['firstName'] . ' ' . $profile['lastName']); ?> — Portfolio</span>
-        </div>
-        <div class="footer-right">
-            <span class="mono-label"><?= htmlspecialchars($profile['city']); ?></span>
-        </div>
-    </footer>
+    <!-- Initial Data Injected from PHP -->
+    <script>
+        window.__PORTFOLIO_DATA__ = {
+            profile: <?= json_encode($profile, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE); ?>,
+            stats: <?= json_encode($stats, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE); ?>,
+            filters: <?= json_encode($filters, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE); ?>,
+            projects: <?= json_encode($projects, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE); ?>,
+            socials: <?= json_encode($socials, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE); ?>
+        };
+    </script>
 
-    <!-- Three.js for 3D Graphics -->
+    <!-- Vue 3 Framework (Local standalone with CDN Fallback) -->
+    <script src="vue.global.js"></script>
+    <script>
+        if (!window.Vue) {
+            document.write('<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"><\/script>');
+        }
+    </script>
     <script src="script.js?v=<?= time(); ?>"></script>
 </body>
 
